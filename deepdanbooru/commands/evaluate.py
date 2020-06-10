@@ -1,4 +1,5 @@
 import os
+import sys
 from typing import Any, Iterable, List, Tuple, Union
 
 import six
@@ -41,6 +42,8 @@ def evaluate(target_paths, project_path, model_path, tags_path, threshold, allow
     if not tags_path and not project_path:
         raise Exception('You must provide project path or tags path.')
 
+    error_log = open("errors.log", "w")
+
     target_image_paths = []
 
     for target_path in target_paths:
@@ -75,6 +78,8 @@ def evaluate(target_paths, project_path, model_path, tags_path, threshold, allow
             for tag, score in evaluate_image(image_path, model, tags, threshold):
                 print(f'({score:05.3f}) {tag}')
         except:
+            e = sys.exc_info()[0]
+            error_log.write("Error with image {0}: {1}\n".format(image_path, str(e)))
             print("ERROR")
 
         print()
