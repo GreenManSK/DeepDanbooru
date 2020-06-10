@@ -2,6 +2,7 @@ from typing import Any, Union
 
 import six
 import tensorflow as tf
+import tensorflow_io as tfio
 
 import deepdanbooru as dd
 
@@ -16,7 +17,11 @@ def load_image_for_evaluate(
         image_raw = input_.getvalue()
     else:
         image_raw = tf.io.read_file(input_)
-    image = tf.io.decode_image(image_raw, channels=3, expand_animations=False)
+    if input_.lower().endswith(".webp"):
+        image = tfio.image.decode_webp(image_raw)
+        image = image[:, :, 0:3]
+    else:
+        image = tf.io.decode_image(image_raw, channels=3, expand_animations=False)
 
     image = tf.image.resize(
         image, size=(height, width), method=tf.image.ResizeMethod.AREA, preserve_aspect_ratio=True)
