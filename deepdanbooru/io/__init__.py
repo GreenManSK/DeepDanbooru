@@ -18,11 +18,17 @@ def try_create_directory(path):
         os.makedirs(path)
 
 
-def get_file_paths_in_directory(path, patterns):
-    return [str(file_path) for pattern in patterns for file_path in Path(path).rglob(pattern)]
+def get_file_paths_in_directory(path, patterns, recursive=True):
+    return [str(file_path) for pattern in patterns for file_path in (Path(path).rglob(pattern) if recursive else Path(path).glob(pattern))]
 
 
 def get_image_file_paths_recursive(folder_path, patterns_string):
     patterns = patterns_string.split(',')
 
     return get_file_paths_in_directory(folder_path, patterns)
+
+
+def get_image_file_paths(folder_path, patterns_string):
+    patterns = patterns_string.split(',')
+
+    return get_file_paths_in_directory(folder_path, patterns, False)

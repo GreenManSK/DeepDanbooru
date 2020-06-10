@@ -31,7 +31,7 @@ def evaluate_image(
             yield tag, result_dict[tag]
 
 
-def evaluate(target_paths, project_path, model_path, tags_path, threshold, allow_gpu, compile_model, allow_folder, folder_filters, verbose):
+def evaluate(target_paths, project_path, model_path, tags_path, threshold, allow_gpu, compile_model, allow_folder, folder_filters, verbose, non_recursive_folders):
     if not allow_gpu:
         os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
@@ -45,7 +45,7 @@ def evaluate(target_paths, project_path, model_path, tags_path, threshold, allow
 
     for target_path in target_paths:
         if allow_folder and not os.path.isfile(target_path):
-            target_image_paths.extend(dd.io.get_image_file_paths_recursive(target_path, folder_filters))
+            target_image_paths.extend(dd.io.get_image_file_paths_recursive(target_path, folder_filters) if not non_recursive_folders else dd.io.get_image_file_paths(target_path, folder_filters))
         else:
             target_image_paths.append(target_path)
 
