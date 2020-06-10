@@ -16,7 +16,7 @@ def load_image_for_evaluate(
         image_raw = input_.getvalue()
     else:
         image_raw = tf.io.read_file(input_)
-    image = tf.io.decode_png(image_raw, channels=3)
+    image = tf.io.decode_image(image_raw, channels=3, expand_animations=False)
 
     image = tf.image.resize(
         image, size=(height, width), method=tf.image.ResizeMethod.AREA, preserve_aspect_ratio=True)
