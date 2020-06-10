@@ -73,7 +73,7 @@ def evaluate(target_paths, project_path, model_path, tags_path, threshold, allow
         tags = dd.project.load_tags_from_project(project_path)
 
     for image_path in target_image_paths:
-        print(f'Tags of {image_path}:')
+        sys.stdout.buffer.write('Tags of {0}:'.format(image_path).encode('utf8'))
         try:
             for tag, score in evaluate_image(image_path, model, tags, threshold):
                 print(f'({score:05.3f}) {tag}')
