@@ -1,3 +1,4 @@
+import codecs
 import sys
 
 import click
@@ -6,6 +7,7 @@ import deepdanbooru as dd
 
 __version__ = '1.0.0'
 
+sys.stdout = codecs.getwriter('utf8')(sys.stdout.buffer)
 
 @click.version_option(prog_name='DeepDanbooru', version=__version__)
 @click.group()
